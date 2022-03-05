@@ -19,6 +19,7 @@ if (isset($_POST['submit'])) {
 			'city' => $_POST['city'],
 			'category_id' => $_POST['category'],
 			'price' => $_POST['price'],
+			'created_at' => '2022-01-05 12:30:20'
 		]
 	);
 

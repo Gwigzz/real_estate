@@ -23,8 +23,8 @@ class AdvertManager extends DataBase
     public function addAdvert(AdvertEntity $advertEntity): int
     {
         $addAdvert = $this->getPDO()->prepare(
-            "INSERT INTO {$this->advert} (title, description, postcode, city, price, category_id)
-                VALUE(:title, :description, :postcode, :city, :price, :category_id)"
+            "INSERT INTO {$this->advert} (title, description, postcode, city, price, category_id, created_at)
+                VALUE(:title, :description, :postcode, :city, :price, :category_id, :created_at)"
         );
 
         $addAdvert->bindValue(':title', $advertEntity->getTitle(), PDO::PARAM_STR);
@@ -33,6 +33,7 @@ class AdvertManager extends DataBase
         $addAdvert->bindValue(':city', $advertEntity->getCity(), PDO::PARAM_STR);
         $addAdvert->bindValue(':price', $advertEntity->getPrice(), PDO::PARAM_INT);
         $addAdvert->bindValue(':category_id', $advertEntity->getCategory_id(), PDO::PARAM_INT);
+        $addAdvert->bindValue(':created_at', $advertEntity->getCreated_at(), PDO::PARAM_STR);
 
         $addAdvert->execute();
 
