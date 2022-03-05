@@ -1,7 +1,6 @@
 <?php
 
 require_once './src/autoload.php';
-require_once './db/DataBase.php';
 
 $advertManager = new AdvertManager();
 

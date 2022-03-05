@@ -5,34 +5,27 @@
  */
 class FormConstraints
 {
-
-    public mixed $constraints;
-
-    public function addConstraint(array $constraint)
+    /** Verify if isset "value" and not empty */
+    public function verify($value)
     {
+        return (!isset($value) && empty($value) && $value !== " " ? $value = null : htmlspecialchars($value));
     }
 
-    static public function controllLength($value, $min, $max)
+    public static function controllLength($value, $min, $max)
     {
         if (strlen($value) < $min || strlen($value) > $max) {
             $value = null;
         }
-        return $value;
+        return htmlspecialchars($value);
     }
 
-    static public function controllString($value)
+    public static function controllString($value)
     {
-        if (!is_string($value)) {
-            $value = null;
-        }
-        return $value;
+        return !is_string($value) ? $value = null : htmlspecialchars($value);
     }
 
-    static public function controllInt($value)
+    public static function controllInt($value)
     {
-        if (!is_int($value)) {
-            $value = null;
-        }
-        return $value;
+        return !is_int($value) ? $value = null : htmlspecialchars($value);
     }
 }

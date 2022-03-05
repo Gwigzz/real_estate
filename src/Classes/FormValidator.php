@@ -1,31 +1,21 @@
 <?php
 
-// require_once 'FormConstraints.php';
+require_once 'FormConstraints.php';
 
 /**
- * Class Form Validator.
- * Form Constraints is required 
- * 
+ * Class Form Validator
  */
-class FormValidator
+class FormValidator extends FormConstraints
 {
-
-    public array $method;
-
-    public function __construct()
+    public function __construct(FormBuilder $formBuilder)
     {
-
-    }
-
-
-    public function setMethod($method)
-    {
-        $this->method = $method;
-        return $this;
-    }
-
-    public function getMethod()
-    {
-        return $this->method;
+        foreach ($formBuilder->method as $key => $data) {
+            if (!$this->verify($data)) {
+                // echo "Donnée # {$data}. Clée #{$key} <br>";
+                echo "Le champ #{$key} est requis.<br>";
+            } else {
+                echo "Donnée Valide #{$data}. Clée #{$key} <br>";
+            }
+        }
     }
 }

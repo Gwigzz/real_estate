@@ -1,8 +1,11 @@
 <?php
 
-require_once 'FormConstraints.php';
+require_once 'FormValidator.php';
 
-class FormBuilder extends FormConstraints
+/**
+ * Class Form Builder
+ */
+class FormBuilder extends FormValidator
 {
     /** METHOD  : "$_GET" or "$_POST"*/
     public array $method;
@@ -17,8 +20,8 @@ class FormBuilder extends FormConstraints
 
         foreach ($this->method as $key => $value) {
             if (in_array($key, $this->required)) {
-
-                echo "key exist : {$key} & {$value} ";
+                // echo "key exist : {$key} & {$value} ";
+                return $value;
             }
         }
     }
