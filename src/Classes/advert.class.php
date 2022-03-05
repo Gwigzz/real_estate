@@ -1,7 +1,4 @@
  <?php
-/*
- * Class Advert
- */
 
  class Advert {
 	 private $id_advert;

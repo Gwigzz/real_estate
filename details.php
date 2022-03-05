@@ -1,8 +1,8 @@
 <?php
 
-require_once('bdd.php');
+require_once './db/bdd.php';
 
-require_once('autoload.php');
+require_once './src/autoload.php';
 
 $advertManager = new AdvertManager($bdd);
 
