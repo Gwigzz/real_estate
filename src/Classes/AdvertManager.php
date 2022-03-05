@@ -70,9 +70,19 @@ class AdvertManager extends DataBase
      */
     public function getLastAdverts(): array
     {
-        return $this->getPDO()->query("SELECT advert.id_advert, advert.title, advert.description, advert.postcode, advert.city, advert.price, category.value AS category, DATE_FORMAT(advert.created_at, '%d/%m/%Y') AS created_at	  
-	FROM advert INNER JOIN category WHERE category.id_category = advert.category_id
-	ORDER BY advert.created_at DESC LIMIT 15")->fetchAll(PDO::FETCH_ASSOC);
+        return $this->getPDO()->query(
+            "SELECT {$this->advert}.id_advert, 
+                    {$this->advert}.title, 
+                    {$this->advert}.description, 
+                    {$this->advert}.postcode, 
+                    {$this->advert}.city, 
+                    {$this->advert}.price, 
+                    {$this->category}.value AS {$this->category}, 
+                    DATE_FORMAT({$this->advert}.created_at, '%d/%m/%Y') AS created_at	  
+	                    FROM {$this->advert} 
+                            INNER JOIN {$this->category} WHERE {$this->category}.id_{$this->category} = {$this->advert}.{$this->category}_id
+	                            ORDER BY advert.created_at DESC LIMIT 15"
+        )->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -81,8 +91,18 @@ class AdvertManager extends DataBase
      */
     public function getAllAdverts(): array
     {
-        return $this->getPDO()->query("SELECT advert.id_advert, advert.title, advert.description, advert.postcode, advert.city, advert.price, category.value AS category, DATE_FORMAT(advert.created_at, '%d/%m/%Y') AS created_at 
-	FROM advert INNER JOIN category WHERE category.id_category = advert.category_id")->fetchAll(PDO::FETCH_ASSOC);
+        return $this->getPDO()->query(
+            "SELECT {$this->advert}.id_advert, 
+                                {$this->advert}.title, 
+                                {$this->advert}.description, 
+                                {$this->advert}.postcode, 
+                                {$this->advert}.city, 
+                                {$this->advert}.price, 
+                                category.value AS category, 
+                                DATE_FORMAT({$this->advert}.created_at, '%d/%m/%Y') AS created_at 
+	                                FROM {$this->advert} 
+                                        INNER JOIN category WHERE category.id_category = {$this->advert}.category_id"
+        )->fetchAll(PDO::FETCH_ASSOC);
     }
 
     /**
@@ -92,42 +112,13 @@ class AdvertManager extends DataBase
     public function getAdvertById(int $id): mixed
     {
         $requete = $this->getPDO()->prepare(
-            "SELECT *, category.value AS category, DATE_FORMAT(created_at, '%d/%m/%Y') AS created_at FROM advert 
-            INNER JOIN category WHERE category.id_category = advert.category_id AND advert.id_advert = :id"
+            "SELECT *, {$this->category}.value AS category, DATE_FORMAT(created_at, '%d/%m/%Y') AS created_at FROM {$this->advert} 
+            INNER JOIN {$this->category} WHERE {$this->category}.id_category = advert.category_id AND advert.id_advert = :id"
         );
         $requete->bindValue(':id', intval($id), PDO::PARAM_INT);
         $requete->execute();
 
         return $requete->fetch();
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $ad
-     * @return int
-     */
-    public function addAdvertFromArray(array $ad)
-    {
-        // Préparation de la requête
-        $add_advert = $this->getPDO()->prepare(
-            "INSERT INTO advert (title, description, postcode, city, price, category_id ) 
-            VALUES (:title, :description, :postcode, :city, :price, :id_category)"
-        );
-
-        // Passage des valeurs à la requête
-        $add_advert->bindValue(':title', $ad['title'], PDO::PARAM_STR);
-        $add_advert->bindValue(':description', $ad['description'], PDO::PARAM_STR);
-        $add_advert->bindValue(':postcode', $ad['postcode'], PDO::PARAM_STR);
-        $add_advert->bindValue(':city', $ad['city'], PDO::PARAM_STR);
-        $add_advert->bindValue(':price', $ad['price'], PDO::PARAM_INT);
-        $add_advert->bindValue(':id_category', $ad['category'], PDO::PARAM_INT);
-
-        $add_advert->execute();
-        //$add_advert->closeCuursor();
-
-        // Retourne l'ID de l'annonce insérée en BDD
-        return $add_advert->rowCount();
     }
 
     /**
@@ -140,7 +131,9 @@ class AdvertManager extends DataBase
     public function updateAdvertFromArray(array $advert)
     {
         // Préparation de la requète SQL
-        $update_advert = $this->getPDO()->prepare("UPDATE `advert` SET `title` = :title, `description` = :description, `postcode` = :postcode, `city`= :city, `price` = :price, `reservation_message` = :reservation_message, `category_id` = :category_id WHERE `id_advert` = :id;");
+        $update_advert = $this->getPDO()->prepare(
+            "UPDATE `{$this->advert}` SET `title` = :title, `description` = :description, `postcode` = :postcode, `city`= :city, `price` = :price, `reservation_message` = :reservation_message, `category_id` = :category_id WHERE `id_advert` = :id;"
+        );
         // On associe les différentes variables aux marqueurs en respectant les types
         $update_advert->bindValue(':id', $advert['id'], PDO::PARAM_INT);
         $update_advert->bindValue(':title', $advert['title'], PDO::PARAM_STR);
@@ -164,8 +157,7 @@ class AdvertManager extends DataBase
      */
     public function deleteAdvertById(int $id)
     {
-
-        $delete_advert = $this->getPDO()->prepare("DELETE FROM advert WHERE id_advert = :id");
+        $delete_advert = $this->getPDO()->prepare("DELETE FROM {$this->advert} WHERE id_advert = :id");
         $delete_advert->bindValue(':id', $id, PDO::PARAM_INT);
         $delete_advert->execute();
         $delete_advert->closeCursor();

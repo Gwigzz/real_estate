@@ -1,23 +1,25 @@
 <?php
 
-class FormBuilder
+require_once 'FormConstraints.php';
+
+class FormBuilder extends FormConstraints
 {
+    /** METHOD  : "$_GET" or "$_POST"*/
+    public array $method;
 
-    public array $value;
+    /** NAME VALUE IN FORM*/
+    public array $required;
 
-    public function __construct(array $value)
+    public function __construct(array $method, array $required)
     {
-        $this->value[] = $value;
-    }
+        $this->method = $method;
+        $this->required = $required;
 
-    public function setValue($value)
-    {
-        $this->value = $value;
-        return $this;
-    }
+        foreach ($this->method as $key => $value) {
+            if (in_array($key, $this->required)) {
 
-    public function getValue()
-    {
-        return $this->value;
+                echo "key exist : {$key} & {$value} ";
+            }
+        }
     }
 }

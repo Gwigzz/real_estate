@@ -3,7 +3,7 @@
 require_once './src/autoload.php';
 require_once './db/DataBase.php';
 
-$advertManager = new AdvertManager($bdd);
+$advertManager = new AdvertManager();
 
 // Récupération des information d'une annonce
 $advert = $advertManager->getAdvertById($_GET['id']);

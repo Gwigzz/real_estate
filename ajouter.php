@@ -3,13 +3,49 @@
 require_once './src/autoload.php';
 require_once 'fonctions.php';
 
+// Manager Advert
 $adManager = new AdvertManager();
 
-if (isset($_POST['submit'])) {
+// Form Builder
+$formBuilder = new FormBuilder(
+	$_POST,
+	['title', 'description', 'postcode', 'city', 'category_id', 'price', 'created_at']
+);
 
-	echo '<pre>';
-	var_dump($_POST);
-	echo '</pre>';
+// Add a constraints
+// $formConstraints = new FormConstraints($formBuilder);
+
+/* $formValidator = new FormValidator(
+	$_POST,
+	$formBuilder
+); */
+
+$formBuilder;
+
+/* echo '<pre>';
+var_dump($formBuilder);
+echo '</pre>';
+echo '<br>'; */
+
+/*
+// TRY CONTROLL ALL DATAS FROM POST
+
+		$formBuilder->controllLength('title', 2, 5),
+		$formBuilder->controllString('description'),
+		$formBuilder->controllInt('postcode'),
+		$formBuilder->controllString('city'),
+		$formBuilder->controllInt('price'),
+		$formBuilder->controllString('created_at')
+*/
+
+/* echo '<pre>';
+var_dump($formValidator);
+echo '</pre>';
+echo '<br>'; */
+
+
+if (isset($_POST['submit'])) {
+	echo '<p>is submit</p>';
 
 	$advertEntity = new AdvertEntity(
 		[
@@ -23,12 +59,11 @@ if (isset($_POST['submit'])) {
 		]
 	);
 
-
-	if ($adManager->addAdvert($advertEntity) > 0) {
+	/* 	if ($adManager->addAdvert($advertEntity) > 0) {
 		echo 'article ajouté';
 	} else {
 		echo 'erreur';
-	}
+	} */
 }
 
 // Header
