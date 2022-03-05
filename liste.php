@@ -1,9 +1,8 @@
 <?php
 
 require_once './src/autoload.php';
-require_once './db/bdd.php';
 
-$advertManager = new AdvertManager($bdd);
+$advertManager = new AdvertManager();
 
 // Récupération de toutes les annonces
 $ads = $advertManager->getAllAdverts();
