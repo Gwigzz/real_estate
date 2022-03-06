@@ -1,7 +1,7 @@
 <?php
 
-require_once './src/autoload.php';
-require_once 'fonctions.php';
+require_once './src/autoload.php';			# Autoload
+require_once 'fonctions.php';				# fonctions
 
 // Manager Advert
 $adManager = new AdvertManager();
@@ -14,7 +14,16 @@ $formBuilder = new FormBuilder(
 
 $formValidator = new FormValidator($formBuilder);
 echo '<pre>';
-var_dump($formValidator);
+// var_dump($formValidator->isValide());
+if ($formValidator->isSubmit() && $formValidator->isValide()) {
+	echo 'submit & valide';
+	var_dump($formBuilder->method);
+} else {
+	echo 'no submit no valide';
+	var_dump($formBuilder->method);
+
+}
+
 echo '</pre>';
 echo '<br>';
 

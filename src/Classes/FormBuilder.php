@@ -7,10 +7,10 @@ require_once 'FormValidator.php';
  */
 class FormBuilder extends FormValidator
 {
-    /** METHOD  : "$_GET" or "$_POST"*/
+    /** Method  : "$_GET" or "$_POST"*/
     public array $method;
 
-    /** NAME VALUE IN FORM*/
+    /** Value "name" in "form" */
     public array $required;
 
     public function __construct(array $method, array $required)
@@ -20,7 +20,6 @@ class FormBuilder extends FormValidator
 
         foreach ($this->method as $key => $value) {
             if (in_array($key, $this->required)) {
-                // echo "key exist : {$key} & {$value} ";
                 return $value;
             }
         }

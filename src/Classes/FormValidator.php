@@ -9,13 +9,24 @@ class FormValidator extends FormConstraints
 {
     public function __construct(FormBuilder $formBuilder)
     {
-        foreach ($formBuilder->method as $key => $data) {
-            if (!$this->verify($data)) {
-                // echo "Donnée # {$data}. Clée #{$key} <br>";
-                echo "Le champ #{$key} est requis.<br>";
-            } else {
-                echo "Donnée Valide #{$data}. Clée #{$key} <br>";
+        if (isset($formBuilder->method)) {
+            foreach ($formBuilder->method as $key => $data) {
+                if (!$this->verify($data)) {
+                    $this->errors[] = "champ <b>#{$key}</b> est requis.";
+                } else {
+                    $this->valide[] = "Donnée Valide #{$data}. Clée #{$key}.";
+                }
             }
         }
+    }
+
+    public function isValide()
+    {
+        return $this->errors ? false : true;
+    }
+
+    public function isSubmit()
+    {
+        return ($_POST || $_GET) ?? false; 
     }
 }
